@@ -1,16 +1,9 @@
-# API é um lugar para disponibilizar recursos /ou funcionalidades
-#Objetivo - Cria uma api que disponibiliza a consuta, criação, edição e exclusão de livros
-
-#URL base - localhost
-
 #Endpoints - 
     # - localhost/livros (GET) (obter todos os livros)
     # - localhost/livros (POST) (criar um novo livro)
     # - localhost/livros/id (GET) (obter um livro por id)
     # - localhost/livros/id (PUT) (alterar um livro por id)
     # - localhost/livros/id (DELETE) (excluir um livro por id)
-
-#Quais recursos - livros
 
 '''Para criar api em python podemos usar o flask ou o jhango.
 O jango é mais avançãdo, para essa api usaremos o flask'''
