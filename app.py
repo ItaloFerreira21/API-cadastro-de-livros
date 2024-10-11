@@ -7,14 +7,14 @@
 
 '''Para criar api em python podemos usar o flask ou o jhango.
 O jango é mais avançãdo, para essa api usaremos o flask'''
+
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
+from config.config import Config
 
 app = Flask(__name__)
+app.config.from_object(Config)  # Carrega as configurações do config.py
 
-# Configuração do banco de dados SQLite
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///livros.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 # Modelo de Livro
@@ -24,41 +24,38 @@ class Livro(db.Model):
     autor = db.Column(db.String(100), nullable=False)
     ano_publicacao = db.Column(db.Integer, nullable=False)
 
-# Criar o banco de dados e as tabelas
-with app.app_context():
-    db.drop_all()  # Remove as tabelas existentes
-    db.create_all()  # Cria as tabelas novamente com o novo modelo
+# Criar o banco de dados e as tabelas, e adicionar livros iniciais
+def inicializar_banco():
+    with app.app_context():
+        db.create_all()  # Cria as tabelas novamente com o novo modelo
+        print("Tabelas criadas.")
+        if Livro.query.count() == 0:
+            print("A tabela está vazia. Adicionando livros iniciais.")
+            livros = [
+                Livro(titulo='O Senhor dos Anéis', autor='J.R.R. Tolkien', ano_publicacao=1954),
+                Livro(titulo='1984', autor='George Orwell', ano_publicacao=1949),
+                Livro(titulo='Game of Thrones', autor='Autor', ano_publicacao=2005),
+                Livro(titulo='Cinderela', autor='Charles Perrault', ano_publicacao=1697),
+                Livro(titulo='Harry Potter', autor='J.K. Rowling', ano_publicacao=1997),
+                Livro(titulo='O Alquimista', autor='Paulo Coelho', ano_publicacao=1988)
+            ]
+            db.session.bulk_save_objects(livros)
+            db.session.commit()
+            print("Livros iniciais adicionados com sucesso.")
 
 # Consultar todos os livros
 @app.route('/livros', methods=['GET'])
 def obter_livros():
     livros = Livro.query.all()
-    resultado = [{'id': livro.id, 'titulo': livro.titulo, 'autor': livro.autor} for livro in livros]
+    resultado = [{'id': livro.id, 'titulo': livro.titulo, 'autor': livro.autor, 'ano_publicacao': livro.ano_publicacao} for livro in livros]
     return jsonify(resultado)
-with app.app_context():
-    db.drop_all()
-    db.create_all()
-
-    livros = [
-        Livro(titulo='O Senhor dos Anéis', autor='J.R.R. Tolkien', ano_publicacao=1954),
-        Livro(titulo='1984', autor='George Orwell', ano_publicacao=1949),
-        Livro(titulo='Game of Thrones', autor='Autor', ano_publicacao=2005),
-        Livro(titulo='Cinderela', autor='Charles Perrault', ano_publicacao=1697),
-        Livro(titulo='Harry Potter', autor='J.K. Rowling', ano_publicacao=1997),
-        Livro(titulo='O Alquimista', autor='Paulo Coelho', ano_publicacao=1988)
-    ]
-
-    db.session.bulk_save_objects(livros)
-    db.session.commit()
-
-
 
 # Consultar livro por ID
 @app.route('/livros/<int:livro_id>', methods=['GET'])
 def obter_livro(livro_id):
     livro = Livro.query.get(livro_id)
     if livro:
-        return jsonify({'id': livro.id, 'titulo': livro.titulo, 'autor': livro.autor}), 200
+        return jsonify({'id': livro.id, 'titulo': livro.titulo, 'autor': livro.autor, 'ano_publicacao': livro.ano_publicacao}), 200
     else:
         return jsonify({'error': 'Livro não encontrado'}), 404
 
@@ -86,7 +83,7 @@ def criar_livro():
             'id': novo_livro.id,
             'titulo': novo_livro.titulo,
             'autor': novo_livro.autor,
-            'ano_publicacao': novo_livro.ano_publicacao  # Retorna o ano de publicação também
+            'ano_publicacao': novo_livro.ano_publicacao
         }), 201
 
     except Exception as e:
@@ -120,9 +117,6 @@ def editar_livro(livro_id):
         db.session.rollback()  # Desfaz a operação em caso de erro
         return jsonify({'erro': str(e)}), 500
 
-
-
-
 # Excluir um livro por ID
 @app.route('/livros/<int:livro_id>', methods=['DELETE'])
 def excluir_livro(livro_id):
@@ -140,6 +134,9 @@ def excluir_livro(livro_id):
     except Exception as e:
         db.session.rollback()  # Desfaz a operação em caso de erro
         return jsonify({'erro': str(e)}), 500
+
 # Executa o servidor Flask
 if __name__ == '__main__':
+    inicializar_banco()  # Chama a função para inicializar o banco de dados
     app.run(port=5000, host='localhost', debug=True)
+
