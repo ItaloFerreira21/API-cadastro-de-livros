@@ -28,9 +28,9 @@ class Livro(db.Model):
 def inicializar_banco():
     with app.app_context():
         db.create_all()  # Cria as tabelas novamente com o novo modelo
-        print("Tabelas criadas.")
+        #print("Tabelas criadas.")
         if Livro.query.count() == 0:
-            print("A tabela está vazia. Adicionando livros iniciais.")
+            #print("A tabela está vazia. Adicionando livros iniciais.")
             livros = [
                 Livro(titulo='O Senhor dos Anéis', autor='J.R.R. Tolkien', ano_publicacao=1954),
                 Livro(titulo='1984', autor='George Orwell', ano_publicacao=1949),
@@ -41,7 +41,7 @@ def inicializar_banco():
             ]
             db.session.bulk_save_objects(livros)
             db.session.commit()
-            print("Livros iniciais adicionados com sucesso.")
+            #print("Livros iniciais adicionados com sucesso.")
 
 # Consultar todos os livros
 @app.route('/livros', methods=['GET'])
