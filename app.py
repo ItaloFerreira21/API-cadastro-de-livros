@@ -11,6 +11,10 @@ O jango é mais avançãdo, para essa api usaremos o flask'''
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from config.config import Config
+from flask_cors import CORS
+
+app = Flask(__name__)
+CORS(app)  # Isso habilita o CORS para todas as rotas
 
 app = Flask(__name__)
 app.config.from_object(Config)  # Carrega as configurações do config.py

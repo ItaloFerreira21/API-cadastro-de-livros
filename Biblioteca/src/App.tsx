@@ -1,20 +1,18 @@
 import React from 'react';
 import './App.css';
-import { Header } from './component/header';
-import { ConteudoHeader } from './component/ConteudoHeader';
+import { Header } from './component/Header'
+import { MainContent } from './component/MainContent';
+import {Footer} from './component/Footer';
+
+
 
 
 export const App: React.FC = () => {
-  const navLinks = [
-    { name: 'Inicio', url: '/' },
-    { name: 'Sobre', url: '/sobre' },
-    { name: 'Contato', url: '/contato' }
-  ];
-
   return (
     <div>
-      <Header title="Biblioteca virtual" links={navLinks} />
-      <ConteudoHeader />
+      <Header  />
+      <MainContent />
+      <Footer />
     </div>
   );
 };
