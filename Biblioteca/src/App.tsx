@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import { Header } from './component/header';
+import { ConteudoHeader } from './component/ConteudoHeader';
 
 
 export const App: React.FC = () => {
@@ -13,7 +14,7 @@ export const App: React.FC = () => {
   return (
     <div>
       <Header title="Biblioteca virtual" links={navLinks} />
-      {/* Conteúdo da página abaixo do Header */}
+      <ConteudoHeader />
     </div>
   );
 };
