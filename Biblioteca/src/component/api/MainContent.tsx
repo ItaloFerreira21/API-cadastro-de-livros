@@ -26,6 +26,7 @@ export const MainContent: React.FC = () => {
         setLoading(false); // Independentemente do resultado, atualiza o estado de carregamento
       }
     };
+    
 
     fetchLivros();
   }, []);
@@ -39,6 +40,8 @@ export const MainContent: React.FC = () => {
   if (error) {
     return <p>{error}</p>;
   }
+  console.log('livros'+ livros)
+  console.log('TESTE')
 
   return (
     <div>
