@@ -3,7 +3,7 @@
   color: #212529;
   text-align: center;
   padding: 15px;
-  position: relative;
+  position: fixed;
   bottom: 0;
   width: 100%;
 }
