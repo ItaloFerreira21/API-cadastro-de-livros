@@ -1,19 +1,21 @@
 import React from 'react';
 import './LivroItem.css'; // Importando CSS para o item do livro
-
-interface LivroProps {
+interface Livro {
   id: number;
-  title: string;
-  author: string;
-  year: number;
+  titulo: string;
+  autor: string;
+  ano_publicacao: number;
+}
+interface LivroProps {
+  livro: Livro;
 }
 
-export const LivroItem: React.FC<LivroProps> = ({ id, title, author, year }) => {
+export const LivroItem= ({ livro }:LivroProps) => {
   return (
     <div className="livro-item">
-      <h2>{title}</h2>
-      <p>Autor: Hiago c. Verme {author}</p>
-      <p>Ano: 2000 {year}</p>
+      <h2>{livro.titulo}</h2>
+      <p>Autor: {livro.autor}</p>
+      <p>Ano: {livro.ano_publicacao}</p>
     </div>
   );
 };

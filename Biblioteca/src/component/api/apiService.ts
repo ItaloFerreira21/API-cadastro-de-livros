@@ -3,9 +3,9 @@ import axios from 'axios';
 // Define o tipo Livro
 interface Livro {
   id: number;
-  title: string;
-  author: string;
-  year: number;
+  titulo: string;
+  autor: string;
+  ano_publicacao: number;
 }
 
 const apiClient = axios.create({

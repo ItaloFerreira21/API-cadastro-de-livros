@@ -4,9 +4,9 @@ import { getLivros } from './apiService';
 // Define o tipo Livro
 interface Livro {
   id: number;
-  title: string;
-  author: string;
-  year: number;
+  titulo: string;
+  autor: string;
+  ano_publicacao: number;
 }
 
 export const MainContent: React.FC = () => {
@@ -49,9 +49,9 @@ export const MainContent: React.FC = () => {
       <ul>
         {livros.map((livro) => (
           <li key={livro.id}>
-            <h2>{livro.title}</h2>
-            <p>Autor: {livro.author}</p>
-            <p>Ano: {livro.year}</p>
+            <h2>{livro.titulo}</h2>
+            <p>Autor: {livro.autor}</p>
+            <p>Ano: {livro.ano_publicacao}</p>
           </li>
         ))}
       </ul>
