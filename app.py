@@ -5,7 +5,7 @@ from routes.livros import livros_blueprint
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app, resources={r"/livros/*": {"origins": "http://localhost:3001"}})
+CORS(app, resources={r"/livros/*": {"origins": "*", "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"]}})
 app.config.from_object(Config)
 
 # Inicializa o banco de dados

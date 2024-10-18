@@ -18,11 +18,18 @@ const apiClient = axios.create({
 // Função para obter a lista de livros
 export const getLivros = async (): Promise<Livro[]> => {
   try {
-    const response = await apiClient.get('/livros'); 
-    return response.data;
+    const response = await apiClient.get('/livros');
+    console.log("Response >>>>>>>>>>>>>>>>>", response);
+    return response.data; // Retorna a lista de livros
   } catch (error) {
-    console.error('Erro ao buscar os livros:', error);
-    throw error;
+    // Tratamento de erro
+    if (axios.isAxiosError(error)) {
+      console.error('Erro ao buscar os livros:', error.message); // Mensagem de erro do axios
+      throw new Error(error.response?.data?.message || 'Erro desconhecido ao buscar livros.'); // Mensagem personalizada
+    } else {
+      console.error('Erro inesperado:', error);
+      throw new Error('Erro inesperado ao buscar livros.'); // Mensagem genérica para outros erros
+    }
   }
 };
 
@@ -40,7 +47,7 @@ export const getLivrosById = async (id: number): Promise<Livro> => {
 // Função para criar um novo livro
 export const addLivros = async (livro: Livro) => {
   try {
-    const response = await apiClient.post('/livros', livro);
+    const response = await apiClient.post('/livros/', livro);
     return response.data;
   } catch (error) {
     console.error('Erro ao adicionar o livro:', error);

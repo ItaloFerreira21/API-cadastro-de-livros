@@ -11,17 +11,16 @@ export interface Livro {
 const FormRegisterBooks = () => {
   const [author, setAuthor] = useState("");
   const [title, setTitle] = useState("");
-  const livro:Livro={
-    id: Math.floor(Math.random() * 1000000000),
-    titulo: title,
-    autor: author,
-    ano_publicacao: new Date().getFullYear(),
-  }
+ const livro: Livro = {
+      id: 0, 
+      titulo: title,
+      autor: author,
+      ano_publicacao: new Date().getFullYear(),
+    };
   console.log(livro)
   const handleSubmit = async(e: FormEvent<HTMLFormElement>) => { 
     e.preventDefault();
-    try {
-      
+    try {      
       await addLivros(livro);
     } catch (e) {
       console.log(e)
