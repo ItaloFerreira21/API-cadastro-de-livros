@@ -18,11 +18,15 @@ def obter_livro(livro_id):
     else:
         return jsonify({'error': 'Livro não encontrado'}), 404
 
-@livros_blueprint.route('/', methods=['POST'])
+@livros_blueprint.route('/', methods=['POST']) #Adiciona novo livro
 def criar_livro():
     dados = request.get_json()
     if not dados or 'titulo' not in dados or 'autor' not in dados or 'ano_publicacao' not in dados:
         return jsonify({'erro': 'Dados inválidos'}), 400
+    # Verifica se um livro com o mesmo título e autor já existe
+    livro_existente = Livro.query.filter_by(titulo=dados['titulo'], autor=dados['autor']).first()
+    if livro_existente:
+        return jsonify({'erro': 'Livro já existe'}), 409
     try:
         novo_livro = Livro(titulo=dados['titulo'], autor=dados['autor'], ano_publicacao=dados['ano_publicacao'])
         db.session.add(novo_livro)
